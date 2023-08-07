@@ -47,7 +47,7 @@ form input {
   margin-right: 20px;
   margin-bottom: 20px;
   border: 1px solid rgb(231, 225, 225);
-  border-radius: 5px;
+  border-radius: 14px;
   background: #963444;
 }
 .photo-card img {
@@ -68,6 +68,20 @@ form input {
   justify-content: center;
 }
 
+.load-more-unhidden {
+  margin: 20px auto;
+  padding: 30px 40px;
+  background-color: #963444;
+  color: white;
+  border-radius: 20px;
+  visibility: visible;
+  display: flex;
+}
+
+.load-more-unhidden:focus {
+  background-color: black;
+}
+
 .load-more {
-  display: none;
+  visibility: hidden;
 }/*# sourceMappingURL=index.css.map */

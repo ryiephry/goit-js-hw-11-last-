@@ -3,54 +3,63 @@ form {
     justify-content: center;
 
     input {
-        margin-right:20px;
+        margin-right: 20px;
     }
 }
 
 .gallery {
-    display:flex;
+    display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top:50px;
-      
-    //give last photo-card no margin 
+    margin-top: 50px;
+
+    //give last photo-card no margin
     :last-child {
-            margin-right: 0px;
-           
-        }
+        margin-right: 0px;
+    }
 }
 
-.photo-card{
-    margin-right:20px;
-    margin-bottom:20px;
+.photo-card {
+    margin-right: 20px;
+    margin-bottom: 20px;
     border: 1px solid rgb(231, 225, 225);
-    border-radius: 5px;
+    border-radius: 14px;
     background: #963444;
 
-img {
+    img {
         width: 300px;
         height: 200px;
     }
 }
 
 .info {
-    display:flex;   
+    display: flex;
     align-items: center;
-   
+
+    // scss
     .info-item {
-        margin:4px;
+        margin: 4px;
         display: flex;
         flex-wrap: wrap;
         width: min-content;
         justify-content: center;
     }
+}
 
+.load-more-unhidden {
+    margin: 20px auto;
+    padding: 30px 40px;
+    background-color: #963444;
+    color: white;
+    border-radius: 20px;
+    visibility: visible;
+    display: flex;
+}
+
+.load-more-unhidden:focus {
+    background-color: black;
 }
 
 .load-more {
-    display:none;
-
+    visibility: hidden;
 }
-
-
-
