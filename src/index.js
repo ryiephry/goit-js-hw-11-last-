@@ -53,6 +53,7 @@ async function handleFormSubmit(e) {
      
     //  loadMoreEl.classList.add("load-more");
      loadMoreEl.classList.remove("load-more-unhidden");
+     loadMoreEl.classList.add("load-more");
    }
   
   
