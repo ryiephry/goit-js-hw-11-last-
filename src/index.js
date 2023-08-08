@@ -20,13 +20,15 @@ async function handleFormSubmit(e) {
   if (inputEl.value !== userInput && e.target.className !== 'load-more-unhidden'   ) { 
     gallery.innerHTML = ""
     page = 1
-    loadMoreEl.classList.remove("load-more-unhidden")//classList.remove('load-more-unhidden');
-  }
 
+    loadMoreEl.classList.remove("load-more-unhidden")//classList.remove('load-more-unhidden');
+    loadMoreEl.classList.add("load-more")
+  }
+ 
+    
   // Get the user input from the first input element in the form and remove any leading/trailing white spaces
   if (e.target.className === 'load-more-unhidden') {
     userInput = userInput.trim(); // Use the stored userInput value
-    // page += 1;
   } else {
     userInput = inputEl.value.trim();
   }
@@ -35,11 +37,18 @@ async function handleFormSubmit(e) {
   const data = await fetchData(userInput, page);
 
   if (data.total === 0) {
-    // Check for images
+    //if no images 
     alert('Sorry, no images found. Please try again.');
   } else {
+    console.log(data.totalHits)
     createMarkup(data.hits);
   }
+
+  //     // if the page times the amount of images => totalHits , alerts screen 
+  // if (page * 40 >= data.totalHits) { 
+  //   alert("We're sorry, but you've reached the end of search results.")
+  // }
+
 
   // Reset the input value to an empty string after the form is submitted
   if (e.target.className !== 'load-more-unhidden') {
@@ -47,9 +56,7 @@ async function handleFormSubmit(e) {
   }
   page += 1;
 }
-
 // Rest of the code remains unchanged... // ..
-
 // Function to fetch data from the Pixabay API based on user input and page number
 async function fetchData(userInput, page) {
   try {
@@ -98,7 +105,6 @@ function createMarkup(hits) {
   }
   loadMoreEl.classList.add('load-more-unhidden');
   loadMoreEl.classList.remove('load-more');
-  // console.log(hits.length)
 }
 
 loadMoreEl.addEventListener("click", handleFormSubmit);
