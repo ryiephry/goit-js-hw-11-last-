@@ -46,11 +46,20 @@ async function handleFormSubmit(e) {
   let totalImages = page * 40;
 
       // if the page times the amount of images => totalHits , alerts screen 
-  if (totalImages === data.totalHits || totalImages >= data.totalHits) { 
-    alert("We're sorry, but you've reached the end of search results.")
-    loadMoreEl.classList.add("load-more");
-  }
+  
+   if (totalImages < data.totalHits) { 
+      console.log("less then")
+   }
+  
+  if (totalImages === data.totalHits || totalImages > data.totalHits) { 
+    // if (data.totalHits <= data) { 
+      console.log("more then")
+      alert("We're sorry, but you've reached the end of search results.")
+    // }
 
+      loadMoreEl.classList.add("load-more");
+   
+  }
 
   // Reset the input value to an empty string after the form is submitted
   if (e.target.className !== 'load-more-unhidden') {
