@@ -47,9 +47,8 @@ async function handleFormSubmit(e) {
 
       // if the page times the amount of images => totalHits , alerts screen 
   
-   if (totalImages < 40) { 
-     console.log("less then")
-     console.log(totalImages)
+   if (data.hits < 40) { 
+     console.log("less hits")
    }
   
   if (totalImages === data.totalHits && totalImages > data.totalHits) { 
