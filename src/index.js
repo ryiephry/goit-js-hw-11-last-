@@ -4,7 +4,7 @@ const gallery = document.querySelector('.gallery');
 const loadMoreEl = document.querySelector('.load-more');
 const inputEl = document.querySelector('[name=searchQuery]');
 let userInput = ''; // Global variable to store the userInput
-
+let dataEl = ''
 let page = 1;
 
 
@@ -46,10 +46,11 @@ async function handleFormSubmit(e) {
   let totalImages = page * 40;
 
       // if the page times the amount of images => totalHits , alerts screen 
-  
+  let dataEl = data.hits;
+
    if (data.hits < 40) { 
      console.log("less hits")
-
+     
      loadMoreEl.classList.add("load-more");
      loadMoreEl.classList.remove("load-more-unhidden");
    }
@@ -118,8 +119,12 @@ function createMarkup(hits) {
             </div>`;
     gallery.append(divEl);
   }
+  
+  if (dataEl > 40) {
+     loadMoreEl.classList.remove('load-more');
+  }
   loadMoreEl.classList.add('load-more-unhidden');
-  loadMoreEl.classList.remove('load-more');
+ 
 }
 
 loadMoreEl.addEventListener("click", handleFormSubmit);
