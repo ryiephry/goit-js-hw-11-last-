@@ -121,7 +121,9 @@ function createMarkup(hits) {
   }
   
   if (dataEl > 40) {
-     loadMoreEl.classList.remove('load-more');
+    loadMoreEl.classList.remove('load-more');
+  } else { 
+    loadMoreEl.classlList.add("load-more");
   }
   loadMoreEl.classList.add('load-more-unhidden');
  
