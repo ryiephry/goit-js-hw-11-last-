@@ -56,16 +56,18 @@ async function handleFormSubmit(e) {
    }
   
   
-  if (totalImages === data.totalHits && totalImages > data.totalHits) { 
+  if (totalImages === data.totalHits && totalImages > data.totalHits) {
     // if (data.totalHits <= data) { 
     console.log("more then");
-      alert("We're sorry, but you've reached the end of search results.")
+    alert("We're sorry, but you've reached the end of search results.")
     // }
 
-      loadMoreEl.classList.add("load-more");
+    loadMoreEl.classList.add("load-more");
    
+  } else { 
+    loadMoreEl.classList.remove("load-more")
   }
-   loadMoreEl.classList.add("load-more");
+   
 
   // Reset the input value to an empty string after the form is submitted
   if (e.target.className !== 'load-more-unhidden') {
