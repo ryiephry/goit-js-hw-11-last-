@@ -43,11 +43,13 @@ async function handleFormSubmit(e) {
     console.log(data.totalHits)
     createMarkup(data.hits);
   }
+  let totalImages = page * 40;
 
-  //     // if the page times the amount of images => totalHits , alerts screen 
-  // if (page * 40 >= data.totalHits) { 
-  //   alert("We're sorry, but you've reached the end of search results.")
-  // }
+      // if the page times the amount of images => totalHits , alerts screen 
+  if (totalImages === data.totalHits || totalImages >= data.totalHits) { 
+    alert("We're sorry, but you've reached the end of search results.")
+    loadMoreEl.classList.add("load-more");
+  }
 
 
   // Reset the input value to an empty string after the form is submitted
