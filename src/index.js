@@ -15,10 +15,12 @@ formEl.addEventListener('submit', handleFormSubmit);
 async function handleFormSubmit(e) {
   e.preventDefault(); // Prevent the default form submission behavior
   
+
+  // checks if the current value is equal to previous value ,  and  if the button thats being pressed isnt the load more button then it executes 
   if (inputEl.value !== userInput && e.target.className !== 'load-more-unhidden'   ) { 
-    console.log("hi")
     gallery.innerHTML = ""
     page = 1
+    loadMoreEl.classList.remove("load-more-unhidden")//classList.remove('load-more-unhidden');
   }
 
   // Get the user input from the first input element in the form and remove any leading/trailing white spaces
