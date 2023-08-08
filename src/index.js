@@ -49,7 +49,9 @@ async function handleFormSubmit(e) {
   
    if (data.hits < 40) { 
      console.log("less hits")
+
      loadMoreEl.classList.add("load-more");
+     loadMoreEl.classList.remove("load-more-unhidden");
    }
   
   
