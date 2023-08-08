@@ -47,13 +47,14 @@ async function handleFormSubmit(e) {
 
       // if the page times the amount of images => totalHits , alerts screen 
   
-   if (totalImages < data.totalHits) { 
-      console.log("less then")
+   if (totalImages < 40) { 
+     console.log("less then")
+     console.log(totalImages)
    }
   
-  if (totalImages === data.totalHits || totalImages > data.totalHits) { 
+  if (totalImages === data.totalHits && totalImages > data.totalHits) { 
     // if (data.totalHits <= data) { 
-      console.log("more then")
+    console.log("more then");
       alert("We're sorry, but you've reached the end of search results.")
     // }
 
