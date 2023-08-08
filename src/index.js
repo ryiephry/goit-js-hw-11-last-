@@ -65,7 +65,7 @@ async function handleFormSubmit(e) {
       loadMoreEl.classList.add("load-more");
    
   }
-
+   loadMoreEl.classList.add("load-more");
 
   // Reset the input value to an empty string after the form is submitted
   if (e.target.className !== 'load-more-unhidden') {
