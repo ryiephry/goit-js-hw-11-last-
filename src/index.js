@@ -7,17 +7,24 @@ let userInput = ''; // Global variable to store the userInput
 
 let page = 1;
 
+
 // Add an event listener to the form to handle form submissions
 formEl.addEventListener('submit', handleFormSubmit);
 
 // Function to handle form submissions
 async function handleFormSubmit(e) {
   e.preventDefault(); // Prevent the default form submission behavior
+  
+  if (inputEl.value !== userInput && e.target.className !== 'load-more-unhidden'   ) { 
+    console.log("hi")
+    gallery.innerHTML = ""
+    page = 1
+  }
 
   // Get the user input from the first input element in the form and remove any leading/trailing white spaces
   if (e.target.className === 'load-more-unhidden') {
     userInput = userInput.trim(); // Use the stored userInput value
-    page += 1;
+    // page += 1;
   } else {
     userInput = inputEl.value.trim();
   }
@@ -35,9 +42,8 @@ async function handleFormSubmit(e) {
   // Reset the input value to an empty string after the form is submitted
   if (e.target.className !== 'load-more-unhidden') {
     inputEl.value = '';
-    page += 1;
   }
-
+  page += 1;
 }
 
 // Rest of the code remains unchanged... // ..
@@ -93,4 +99,4 @@ function createMarkup(hits) {
   // console.log(hits.length)
 }
 
-loadMoreEl.addEventListener('click', handleFormSubmit);
+loadMoreEl.addEventListener("click", handleFormSubmit);
