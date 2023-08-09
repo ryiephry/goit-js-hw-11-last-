@@ -44,23 +44,16 @@ async function handleFormSubmit(e) {
     console.log(data.totalHits)
     createMarkup(data.hits);
   }
-  
-console.log(data.totalHits)
   if (totalImages >= data.totalHits) {
-    console.log("more then");
     alert("We're sorry, but you've reached the end of search results.");
     loadMoreEl.classList.add("load-more")
   }
-  
   if (data.hits.length === 40) {
-           console.log("true");
     loadMoreEl.classList.add("load-more-unhidden");
     loadMoreEl.classList.remove("load-more");
-    
   } 
    else {
     loadMoreEl.classList.add("load-more")
-   
   }
   
 
@@ -86,7 +79,7 @@ console.log(data.totalHits)
         `https://pixabay.com/api/?key=38245803-17b2e774beea3b422758604fe&q=${userInput}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`
       );
       // Return the data (hits array and other information) from the API response
-      console.log(page);
+      console.log(page)
       return response.data;
     } catch (error) {
       // If an error occurs during the API call, log the error message and throw the error
