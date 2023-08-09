@@ -6,7 +6,7 @@ const inputEl = document.querySelector('[name=searchQuery]');
 let userInput = ''; // Global variable to store the userInput
 let dataEl = ''
 let page = 1;
-
+let totalImages = page * 40;
 
 // Add an event listener to the form to handle form submissions
 formEl.addEventListener('submit', handleFormSubmit);
@@ -39,46 +39,44 @@ async function handleFormSubmit(e) {
   if (data.total === 0) {
     //if no images 
     alert('Sorry, no images found. Please try again.');
-  } else {
+  }
+  else {
     console.log(data.totalHits)
     createMarkup(data.hits);
   }
-
-
-  let totalImages = page * 40;
-
-  // if the page times the amount of images => totalHits , alerts screen 
-  let dataEl = data.hits;
-
-
-  if (data.hits < 40) {
-    console.log("less hits")
-     
-    //  loadMoreEl.classList.add("load-more");
-    loadMoreEl.classList.remove("load-more-unhidden");
-    loadMoreEl.classList.add("load-more");
-  }
   
-  
-  if (totalImages === data.totalHits && totalImages > data.totalHits) {
-    // if (data.totalHits <= data) { 
+console.log(data.totalHits)
+  if (totalImages >= data.totalHits) {
     console.log("more then");
-    alert("We're sorry, but you've reached the end of search results.")
-    // }
-
-    loadMoreEl.classList.add("load-more");
-   
-    // } else { 
-    //   loadMoreEl.classList.remove("load-more")
-    // }
-   
-
-    // Reset the input value to an empty string after the form is submitted
-    if (e.target.className !== 'load-more-unhidden') {
-      inputEl.value = '';
-    }
-    page += 1;
+    alert("We're sorry, but you've reached the end of search results.");
+    loadMoreEl.classList.add("load-more")
   }
+  
+  if (data.hits.length === 40) {
+           console.log("true");
+    loadMoreEl.classList.add("load-more-unhidden");
+    loadMoreEl.classList.remove("load-more");
+    
+  } 
+   else {
+    loadMoreEl.classList.add("load-more")
+   
+  }
+  
+
+
+  // loadMoreEl.classList.remove("load-more-unhidden")
+  // if (totalImages === data.totalHits && totalImages > data.totalHits) {
+    
+ 
+  //   loadMoreEl.classList.add("load-more");
+   
+  // } 
+ 
+ 
+  page += 1;
+  inputEl.value = '';
+
   // Rest of the code remains unchanged... // ..
   // Function to fetch data from the Pixabay API based on user input and page number
   async function fetchData(userInput, page) {
@@ -127,11 +125,14 @@ async function handleFormSubmit(e) {
       gallery.append(divEl);
     }
   
-    if (dataEl > 40) {
-      loadMoreEl.classList.remove('load-more');
-    }
+    // loadMoreEl.classList.remove('load-more');
     loadMoreEl.classList.add('load-more-unhidden');
  
   }
 }
+
 loadMoreEl.addEventListener("click", handleFormSubmit);
+
+
+loadMoreEl.classList.add("load-more");
+
