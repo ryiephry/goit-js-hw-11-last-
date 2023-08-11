@@ -59,6 +59,7 @@ form input {
 .info {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 .info .info-item {
   margin: 4px;
@@ -72,7 +73,7 @@ form input {
 .load-more-unhidden {
   margin: 20px auto;
   padding: 30px 40px;
-  background-color: #963444;
+  background-color: #e6dfe0;
   color: white;
   border-radius: 20px;
   visibility: visible;
