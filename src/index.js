@@ -1,106 +1,127 @@
+// Import necessary libraries/modules
 import axios from 'axios';
-const formEl = document.querySelector('.search-form');
-const gallery = document.querySelector('.gallery');
-const loadMoreEl = document.querySelector('.load-more');
-const inputEl = document.querySelector('[name=searchQuery]');
-let userInput = ''; // Global variable to store the userInput
-let dataEl = ''
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
+// Select DOM elements
+const formEl = document.querySelector('.search-form'); // Selects the search form element
+const gallery = document.querySelector('.gallery'); // Selects the gallery container element
+const loadMoreEl = document.querySelector('.load-more'); // Selects the "Load More" button element
+const inputEl = document.querySelector('[name=searchQuery]'); // Selects the search input element
+
+
+let userInput = '';
 let page = 1;
 let totalImages = page * 40;
 
-// Add an event listener to the form to handle form submissions
 formEl.addEventListener('submit', handleFormSubmit);
+loadMoreEl.addEventListener('click', onLoadMore);
 
-// Function to handle form submissions
+// Hide "Load More" button initially
+loadMoreEl.classList.add('load-more');
+
+btnIsHidden();
+
+// Function to handle form submission
 async function handleFormSubmit(e) {
-  e.preventDefault(); // Prevent the default form submission behavior
-  
+  e.preventDefault(); // Prevent default form submission behavior
 
-  // checks if the current value is equal to previous value ,  and  if the button thats being pressed isnt the load more button then it executes 
-  if (inputEl.value !== userInput && e.target.className !== 'load-more-unhidden') {
-    gallery.innerHTML = ""
-    page = 1
+  clearImagesMarkup();
 
-    loadMoreEl.classList.remove("load-more-unhidden")//classList.remove('load-more-unhidden');
-    loadMoreEl.classList.add("load-more")
-  }
- 
-    
-  // Get the user input from the first input element in the form and remove any leading/trailing white spaces
-  if (e.target.className === 'load-more-unhidden') {
-    userInput = userInput.trim(); // Use the stored userInput value
-  } else {
-    userInput = inputEl.value.trim();
+  // Get and trim user input
+  userInput = inputEl.value.trim();
+
+  if (userInput === '') {
+    btnIsHidden(); // Hide "Load More" button
+    return;
   }
 
-  // Fetch data from the API using the user input and the current page number
-  const data = await fetchData(userInput, page);
+  // Reset page and totalImages for new search
+  page = 1;
+  totalImages = page * 40;
 
-  if (data.total === 0) {
-    //if no images 
-    alert('Sorry, no images found. Please try again.');
-  }
-  else {
-    console.log(data.totalHits)
-    createMarkup(data.hits);
-  }
-  if (totalImages >= data.totalHits) {
-    alert("We're sorry, but you've reached the end of search results.");
-    loadMoreEl.classList.add("load-more")
-  }
-  if (data.hits.length === 40) {
-    loadMoreEl.classList.add("load-more-unhidden");
-    loadMoreEl.classList.remove("load-more");
-  } 
-   else {
-    loadMoreEl.classList.add("load-more")
-  }
-  
+  try {
+    // Fetch data from API using user input and page number
+    const data = await fetchData(userInput, page);
 
-
-  // loadMoreEl.classList.remove("load-more-unhidden")
-  // if (totalImages === data.totalHits && totalImages > data.totalHits) {
-    
- 
-  //   loadMoreEl.classList.add("load-more");
-   
-  // } 
- 
- 
-  page += 1;
-  inputEl.value = '';
-
-  // Rest of the code remains unchanged... // ..
-  // Function to fetch data from the Pixabay API based on user input and page number
-  async function fetchData(userInput, page) {
-    try {
-      // Make an HTTP GET request using Axios to the Pixabay API
-      const response = await axios.get(
-        `https://pixabay.com/api/?key=38245803-17b2e774beea3b422758604fe&q=${userInput}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`
+    if (data.hits.length === 0) {
+      Notify.info(
+        'Sorry, there are no images matching your search query. Please try again.'
       );
-      // Return the data (hits array and other information) from the API response
-      console.log(page)
-      return response.data;
-    } catch (error) {
-      // If an error occurs during the API call, log the error message and throw the error
-      console.error('Error fetching data:', error);
-      throw error;
+      btnIsHidden(); // Hide "Load More" button
+      return;
     }
+
+    createMarkup(data.hits);
+
+    // Check if the total number of fetched images is less than 40
+    if (data.hits.length < 40) {
+      Notify.info("We're sorry, but you've reached the end of search results.");
+      btnIsHidden(); // Hide "Load More" button
+    } else {
+      btnIsOpen(); // Show "Load More" button
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    btnIsHidden(); // Hide "Load More" button
   }
 
-  // Function to create markup
-  function createMarkup(hits) {
-    for (let i = 0; i < hits.length; i++) {
-      let divEl = document.createElement('div');
-      divEl.className = 'photo-card';
-      divEl.innerHTML = `<img src="${hits[i].webformatURL}" alt="${hits[i].tags}" loading="lazy" />
+  inputEl.value = ''; // Clear input field
+}
+
+// Function to handle "Load More" button click
+async function onLoadMore() {
+  page += 1; // Increment page number
+  console.log(page)
+  try {
+    // Fetch more data from API using user input and updated page number
+    const data = await fetchData(userInput, page);
+
+    if (data.hits.length === 0) {
+      Notify.info("We're sorry, but there are no more images.");
+      btnIsHidden(); // Hide "Load More" button
+      return;
+    }
+
+    createMarkup(data.hits);
+
+    // Check if the total number of fetched images is less than 40
+    if (data.hits.length < 40) {
+      Notify.info("We're sorry, but you've reached the end of search results.");
+      btnIsHidden(); // Hide "Load More" button
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    btnIsHidden(); // Hide "Load More" button
+  }
+}
+
+// Function to fetch data from the Pixabay API
+async function fetchData(userInput, page) {
+  try {
+    // Make an HTTP GET request using Axios to the Pixabay API
+    const response = await axios.get(
+      `https://pixabay.com/api/?key=38245803-17b2e774beea3b422758604fe&q=${userInput}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=40`
+    );
+    return response.data; // Return the fetched data
+  } catch (error) {
+    throw error; // Throw the error if API request fails
+  }
+}
+
+// Function to create markup for images
+function createMarkup(hits) {
+  for (let i = 0; i < hits.length; i++) {
+    // Create a new div element for each image
+    let divEl = document.createElement('div');
+    divEl.className = 'photo-card'; // Set class name
+    divEl.innerHTML = `<img src="${hits[i].webformatURL}" alt="${hits[i].tags}" loading="lazy" />
             <div class="info">
                 <p class="info-item">
                 <b>Likes</b>
                 <br>
                 ${hits[i].likes}
                 </p>
-                <p class="info-item">
+               <p class="info-item">
                 <b>Views</b>
                  ${hits[i].views}
                 </p>
@@ -115,17 +136,23 @@ async function handleFormSubmit(e) {
                 ${hits[i].downloads}
                 </p>
             </div>`;
-      gallery.append(divEl);
-    }
-  
-    // loadMoreEl.classList.remove('load-more');
-    loadMoreEl.classList.add('load-more-unhidden');
- 
+    gallery.append(divEl); // Append the created element to the gallery
   }
+
+  loadMoreEl.classList.add('load-more-unhidden'); // Show button
 }
 
-loadMoreEl.addEventListener("click", handleFormSubmit);
+function clearImagesMarkup() {
+  gallery.innerHTML = ''; // Clear the content of the gallery element
+}
 
+// Function to hide "Load More" button
+function btnIsHidden() {
+  loadMoreEl.classList.add('load-more'); // Add "load-more" class to hide the button
+}
 
-loadMoreEl.classList.add("load-more");
+// Function to show "Load More" button
+function btnIsOpen() {
+  loadMoreEl.classList.remove('load-more'); // Remove "load-more" class to show the button
+}
 
